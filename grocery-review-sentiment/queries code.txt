@@ -1,0 +1,47 @@
+1.Top 10 Brands by Number of Reviews
+
+SELECT brand, COUNT(*) AS total_reviews
+FROM grocery_and_gourmet_food_new
+GROUP BY brand
+ORDER BY total_review_count DESC
+LIMIT 10;
+ Highlights brands that are highly rated by customers.
+
+
+2. Brand Loyalty: Verified Purchase Percentage
+SELECT 
+  brand,
+  ROUND(100.0 * SUM(CASE WHEN verified_purchase = 'Y' THEN 1 ELSE 0 END) / COUNT(*), 2) AS verified_pct,
+  COUNT(*) AS total_reviews
+FROM grocery_and_gourmet_food_new
+WHERE brand IS NOT NULL
+GROUP BY brand
+HAVING COUNT(*) > 50
+ORDER BY verified_pct DESC
+LIMIT 10;
+Shows which brands are more frequently bought (not just reviewed).
+
+3.. Most Helpful Brands (based on avg helpful votes per review)
+SELECT 
+  brand,
+  ROUND(AVG(helpful_votes), 2) AS avg_helpful_votes,
+  COUNT(*) AS total_reviews
+FROM grocery_and_gourmet_food_new
+WHERE brand IS NOT NULL
+GROUP BY brand
+HAVING COUNT(*) > 50
+ORDER BY avg_helpful_votes DESC
+LIMIT 10;
+
+Summery statictics "Dataset-Level Summary Statistics”
+SELECT
+  COUNT(*) AS total_reviews,
+  COUNT(DISTINCT reviewer_id) AS unique_users,
+  COUNT(DISTINCT product_id) AS unique_items,
+  ROUND(AVG(star_rating), 2) AS avg_rating,
+  ROUND(STDDEV(star_rating), 2) AS rating_stddev,
+  SUM(CASE WHEN verified_purchase = 'Y' THEN 1 ELSE 0 END) AS verified_purchases,
+  ROUND(100.0 * SUM(CASE WHEN verified_purchase = 'Y' THEN 1 ELSE 0 END) / COUNT(*), 2) AS verified_pct
+FROM grocery_and_gourmet_food_new;
+
+

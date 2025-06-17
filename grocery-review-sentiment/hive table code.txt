@@ -1,0 +1,22 @@
+CREATE EXTERNAL TABLE grocery_and_gourmet_food_new (
+  review_id STRING,
+  product_id STRING,
+  product_title STRING,
+  brand STRING,
+  reviewer_id STRING,
+  reviewer_name STRING,
+  review_text STRING,
+  review_title STRING,
+  star_rating INT,
+  helpful_votes INT,
+  total_votes INT,
+  verified_purchase STRING,
+  review_date STRING
+)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+WITH SERDEPROPERTIES (
+  "separatorChar" = ",",
+  "quoteChar"     = "\""
+)
+STORED AS TEXTFILE
+LOCATION 'gs://sunnyk/cleaned_grocery_reviews_csv/CleanedCSV/cleaned.csv/';
